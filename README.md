@@ -1,6 +1,7 @@
 
 [![Regression CI](https://github.com/jalsarraf0/ezsftp/actions/workflows/ci.yml/badge.svg)](https://github.com/jalsarraf0/ezsftp/actions/workflows/ci.yml)
-[![Security CI](https://github.com/jalsarraf0/ezsftp/actions/workflows/security.yml/badge.svg)](https://github.com/jalsarraf0/ezsftp/actions/workflows/security.yml)
+
+> CI runs on self-hosted runners managed by [haskell-ci-orchestrator](https://github.com/jalsarraf0/haskell-ci-orchestrator).
 
 # 📦 Chroot-SFTP User Manager v1.6
 
