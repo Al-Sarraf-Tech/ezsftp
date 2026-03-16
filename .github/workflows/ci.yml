@@ -18,7 +18,7 @@ concurrency:
 jobs:
   lint:
     name: Lint
-    runs-on: [self-hosted, gentoo]
+    runs-on: [self-hosted, unified-all]
     timeout-minutes: 10
     steps:
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
         run: find . -name '*.sh' -type f | xargs shfmt -d
   test:
     name: Test
-    runs-on: [self-hosted, gentoo]
+    runs-on: [self-hosted, unified-all]
     needs: lint
     timeout-minutes: 30
     steps:
@@ -58,7 +58,7 @@ jobs:
         run: echo 'Lint-only repo — no test suite'
   security:
     name: Security
-    runs-on: [self-hosted, gentoo]
+    runs-on: [self-hosted, unified-all]
     needs: lint
     timeout-minutes: 30
     steps:
@@ -80,7 +80,7 @@ jobs:
         run: find . -name '*.sh' -type f | xargs shfmt -d
   sbom:
     name: SBOM
-    runs-on: [self-hosted, gentoo]
+    runs-on: [self-hosted, unified-all]
     needs: test
     if: github.ref == 'refs/heads/main'
     timeout-minutes: 15
@@ -93,7 +93,7 @@ jobs:
         run: echo 'Hand-crafted SBOM — see workflow for inline CycloneDX JSON'
   integration:
     name: Integration
-    runs-on: [self-hosted, gentoo]
+    runs-on: [self-hosted, unified-all]
     needs: test
     timeout-minutes: 60
     steps:

@@ -58,6 +58,7 @@ run_container() {
         return 0
     else
         echo ">>> [${name}] ✗ Failed (see ${output_file})" >&2
+        # shellcheck disable=SC2034
         PID_RESULTS["${name}"]=1
         cat "${output_file}" >&2
         FAILED=$((FAILED + 1))
@@ -150,8 +151,9 @@ while IFS= read -r job; do
 
     # Start job in background
     run_container "$NAME" "$IMAGE" "$COMMAND" &
-    local pid=$!
-    PIDS+=($pid)
+    pid=$!
+    PIDS+=("$pid")
+    # shellcheck disable=SC2034
     PID_NAMES[$pid]="$NAME"
     ACTIVE_JOBS=$((ACTIVE_JOBS + 1))
 done <<< "$JOBS"
