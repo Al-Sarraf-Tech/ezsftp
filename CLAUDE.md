@@ -96,3 +96,18 @@ sshd -t                                         # syntax check after real provis
 | Python | `/usr/bin/python3` | 3.14.3 — not used by this repo |
 
 This repo is pure Bash. No build step required.
+
+
+---
+
+## CI/CD Pipeline (Enforced)
+
+This repository's CI/CD pipeline is **generated and managed by the Haskell CI Orchestrator** (`~/git/haskell-ci-orchestrator`). Do not manually edit `.github/workflows/ci.yml` — changes will be overwritten on the next sync.
+
+**Directives:**
+- All CI/CD runs through the unified `ci.yml` pipeline (lint → test → security → sbom → docker → integration → release)
+- **Never release for macOS** — no macOS runners, no macOS release targets
+- **Never use the Gentoo runner** — all jobs target `[self-hosted, unified-all]`
+- **Never touch `haskell-money` or `haskell-ref`** — hard-denied by the orchestrator
+- Pipeline changes go through the orchestrator catalog (`CI.Catalog`), not direct YAML edits
+- The orchestrator validates, generates, and syncs workflows across all 15 repos
