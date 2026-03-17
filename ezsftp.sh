@@ -214,13 +214,15 @@ remove_user() {
     fi
   done
 
-  # fstab cleanup — use grep -F (fixed-string) to avoid regex issues with path chars
+  # fstab cleanup — remove only the exact bind-mount lines this script creates for this user
+  local FSTAB_LINE_HOME="${HR}  ${CH}  none  bind  0 0"
+  local FSTAB_LINE_SHARED="${SHARED_DIR} ${CS} none  bind  0 0"
   if [[ "$DRY" == "1" ]]; then
-    printf "%b %b %s\n" "${YE}DRY-RUN${NC}" "${CY}➜${NC}" "grep -Fv '${HR}' '${FSTAB_FILE}' > '${FSTAB_FILE}.tmp' && mv '${FSTAB_FILE}.tmp' '${FSTAB_FILE}'"
-    printf "%b %b %s\n" "${YE}DRY-RUN${NC}" "${CY}➜${NC}" "grep -Fv '${SHARED_DIR}' '${FSTAB_FILE}' > '${FSTAB_FILE}.tmp' && mv '${FSTAB_FILE}.tmp' '${FSTAB_FILE}'"
+    printf "%b %b %s\n" "${YE}DRY-RUN${NC}" "${CY}➜${NC}" "grep -Fxv '${FSTAB_LINE_HOME}' '${FSTAB_FILE}' > '${FSTAB_FILE}.tmp' && mv '${FSTAB_FILE}.tmp' '${FSTAB_FILE}'"
+    printf "%b %b %s\n" "${YE}DRY-RUN${NC}" "${CY}➜${NC}" "grep -Fxv '${FSTAB_LINE_SHARED}' '${FSTAB_FILE}' > '${FSTAB_FILE}.tmp' && mv '${FSTAB_FILE}.tmp' '${FSTAB_FILE}'"
   else
-    grep -Fv "${HR}" "${FSTAB_FILE}" > "${FSTAB_FILE}.tmp" && mv "${FSTAB_FILE}.tmp" "${FSTAB_FILE}"
-    grep -Fv "${SHARED_DIR}" "${FSTAB_FILE}" > "${FSTAB_FILE}.tmp" && mv "${FSTAB_FILE}.tmp" "${FSTAB_FILE}"
+    grep -Fxv "${FSTAB_LINE_HOME}" "${FSTAB_FILE}" > "${FSTAB_FILE}.tmp" && mv "${FSTAB_FILE}.tmp" "${FSTAB_FILE}"
+    grep -Fxv "${FSTAB_LINE_SHARED}" "${FSTAB_FILE}" > "${FSTAB_FILE}.tmp" && mv "${FSTAB_FILE}.tmp" "${FSTAB_FILE}"
   fi
   run systemctl daemon-reload
 
