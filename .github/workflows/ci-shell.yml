@@ -20,8 +20,22 @@ concurrency:
   group: ezsftp-ci-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  repo-guard:
+    name: Repository Context Guard
+    runs-on: [self-hosted, unified-all]
+    timeout-minutes: 2
+    steps:
+      - name: Verify repository ownership
+        run: |
+          echo "Repository: ${{ github.repository }}"
+          if [ "${{ github.repository }}" != "Al-Sarraf-Tech/ezsftp" ]; then
+            echo "::error::SECURITY VIOLATION: Unauthorised repository."
+            exit 1
+          fi
+          echo "Repository context verified."
   lint:
     name: Lint
+    needs: repo-guard
     runs-on: [self-hosted, unified-all]
     timeout-minutes: 10
     steps:
@@ -44,7 +58,7 @@ jobs:
   test:
     name: Test
     runs-on: [self-hosted, unified-all]
-    needs: lint
+    needs: [repo-guard, lint]
     timeout-minutes: 30
     steps:
       - name: Checkout
@@ -63,7 +77,7 @@ jobs:
   security:
     name: Security
     runs-on: [self-hosted, unified-all]
-    needs: lint
+    needs: [repo-guard, lint]
     timeout-minutes: 30
     steps:
       - name: Checkout
@@ -85,7 +99,7 @@ jobs:
   sbom:
     name: SBOM
     runs-on: [self-hosted, unified-all]
-    needs: test
+    needs: [repo-guard, test]
     if: github.ref == 'refs/heads/main'
     timeout-minutes: 15
     steps:
@@ -98,7 +112,7 @@ jobs:
   integration:
     name: Integration
     runs-on: [self-hosted, unified-all]
-    needs: test
+    needs: [repo-guard, test]
     timeout-minutes: 60
     steps:
       - name: Checkout
