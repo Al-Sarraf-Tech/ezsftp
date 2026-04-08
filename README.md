@@ -1,7 +1,5 @@
 
-[![Regression CI](https://github.com/jalsarraf0/ezsftp/actions/workflows/ci.yml/badge.svg)](https://github.com/jalsarraf0/ezsftp/actions/workflows/ci.yml)
-
-> CI runs on self-hosted runners managed by [haskell-ci-orchestrator](https://github.com/jalsarraf0/haskell-ci-orchestrator).
+[![Regression CI](https://github.com/Al-Sarraf-Tech/ezsftp/actions/workflows/ci.yml/badge.svg)](https://github.com/Al-Sarraf-Tech/ezsftp/actions/workflows/ci.yml)
 
 # 📦 Chroot-SFTP User Manager v1.6
 
@@ -157,12 +155,18 @@ Q) Quit
 
 🎉 **Happy Automating!**
 
-## Validation Status (2026-03-03)
+## CI/CD & Orchestration
+
+This project is governed by the [Haskell Orchestrator](https://github.com/Al-Sarraf-Tech/Haskell-Orchestrator) — a Haskell-based multi-agent CI/CD governance framework for pre-push validation, code quality enforcement, and release management across the Al-Sarraf-Tech organization.
+
+---
+
+## Validation Status (2026-03-22)
 
 - Regression status: PASS
 - Commands validated:
   - `bash -n ezsftp.sh`
   - `DRY_RUN=1 bash ./ezsftp.sh --non-interactive --action add --user ciuser`
   - `DRY_RUN=1 bash ./ezsftp.sh --non-interactive --action remove --user ciuser`
-- CI/CD status: all tests passed on `main` (`Regression CI` run `22643207499`, `Security CI` run `22643207493`, `Regression and Security` run `22643207490`).
+- CI/CD status: all tests passed on `main`. Governance `repo-guard` job added to pipeline — verifies repository ownership before all other jobs run.
 - Security hygiene: PASS (no hardcoded secrets or private keys detected in tracked files).
