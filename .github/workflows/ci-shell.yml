@@ -62,7 +62,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Cache /tmp/docker-runner
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           key: ${{ runner.os }}-docker-runner-${{ github.sha }}
           path: /tmp/docker-runner
